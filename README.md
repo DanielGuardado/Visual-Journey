@@ -9,7 +9,11 @@ Wouldn't it be great to experience your music in a completely different way? Vis
 ## Wireframe
 ![Wireframe](https://i.imgur.com/lEtD7TA.png)
 ## Architecture and Technology
-* I will be using THREE.js a js library and api in order to create and display 3d graphics using WebGL
+* THREE.js a js library and api in order to create and display 3d graphics using WebGL.
+* Web Audio Api to control textures based on music playing.
+* CSS
+* HTML
+* Webpack
 * /dist
 * /src
   - assets
