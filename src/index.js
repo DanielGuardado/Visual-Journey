@@ -3,6 +3,18 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import SimplexNoise from "simplex-noise";
 
+const modal = document.querySelector(".modal");
+const modalBackground = document.querySelector(".modal-background");
+const buttons = document.querySelectorAll("button");
+buttons[0].addEventListener("click", function () {
+  modal.style.display = "block";
+  modalBackground.style.display = "block";
+});
+buttons[1].addEventListener("click", () => {
+  modal.style.display = "none";
+  modalBackground.style.display = "none";
+});
+
 const noise = new SimplexNoise();
 
 //handy math!
@@ -66,13 +78,13 @@ const visualizerInit = function () {
     const planeAqua = new THREE.MeshLambertMaterial({
       color: 0x00ffff,
       side: THREE.DoubleSide,
-      wireframe: true
+      wireframe: true,
       //wireframe makes seethru wires
     });
     const planeYellow = new THREE.MeshLambertMaterial({
       color: 0xffff00,
       side: THREE.DoubleSide,
-      wireframe: true
+      wireframe: true,
       //wireframe makes seethru wires
     });
     //creating geometry
@@ -90,7 +102,7 @@ const visualizerInit = function () {
     plane3.rotation.x = -0.5 * PI;
     plane3.position.set(0, 30, 0);
     group.add(plane3);
-    
+
     const plane4 = new THREE.Mesh(planeGeometry, planeYellow);
     plane4.rotation.x = -0.5 * PI;
     plane4.position.set(0, 60, 0);
@@ -100,12 +112,12 @@ const visualizerInit = function () {
     plane10.rotation.x = -0.5 * PI;
     plane10.position.set(0, -60, 0);
     group.add(plane10);
-    
+
     const plane5 = new THREE.Mesh(planeGeometry, planeAqua);
     plane5.rotation.x = -0.5 * PI;
     plane5.position.set(0, -30, 0);
     group.add(plane5);
-    
+
     const plane6 = new THREE.Mesh(planeGeometry, planeYellow);
     plane6.rotation.x = 5 * PI;
     plane6.position.set(0, 0, -30);
@@ -126,10 +138,10 @@ const visualizerInit = function () {
     plane9.position.set(0, 0, -60);
     group.add(plane9);
 
-//     var geometry = new THREE.ConeGeometry( 5, 20, 32 );
-// var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-// var cone = new THREE.Mesh( geometry, material );
-// group.add( cone );
+    //     var geometry = new THREE.ConeGeometry( 5, 20, 32 );
+    // var material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+    // var cone = new THREE.Mesh( geometry, material );
+    // group.add( cone );
 
     scene.add(group);
     document.getElementById("render").appendChild(renderer.domElement);
@@ -162,11 +174,11 @@ const visualizerInit = function () {
       planeSound(plane8, modulate(upperAvgFr, 0, 1, 1, 6));
       planeSound(plane9, modulate(upperAvgFr, 0, 1, 1, 6));
       planeSound(plane10, modulate(upperAvgFr, 0, 1, 1, 6));
-      
+
       // group.rotation.y += 0;
       group.rotation.y += lowerAvgFr / 300;
-      group.rotation.x += upperAvg / 2500
-      group.rotation.z +=lowerMaxFr / 2500;
+      group.rotation.x += upperAvg / 2500;
+      group.rotation.z += lowerMaxFr / 2500;
       renderer.render(scene, camera);
       requestAnimationFrame(render);
     }
@@ -176,10 +188,7 @@ const visualizerInit = function () {
       mesh.geometry.vertices.forEach(function (vertex) {
         const amp = 9;
         const distance =
-          (noise.noise2D(vertex.x, vertex.y) +
-            0) *
-          distortion *
-          amp;
+          (noise.noise2D(vertex.x, vertex.y) + 0) * distortion * amp;
         vertex.z = distance;
       });
       mesh.geometry.verticesNeedUpdate = true;

@@ -10,20 +10,56 @@
 
   <body>
     <header>
-    <nav class="navbar">
-      <ul class="nav_links">
-        <li class="logo">Visual Journey</li>
-        <li>Github</li>
-        <li>LinkedIn</li>
-        <li>Angelist</li>
-        <li>Portfolio</li>
-        <input type="button" id="music" value="+" onclick="document.getElementById('mp3File').click();" />
-        <input type="file" style="display:none;" id="mp3File" name="file" accept="audio/*"/>
+      <nav class="navbar">
+        <ul class="nav_links">
+          <li class="logo">Visual Journey</li>
+          <li>Github</li>
+          <li>LinkedIn</li>
+          <li>Angelist</li>
+          <li>Portfolio</li>
+          <input
+            type="button"
+            id="music"
+            value="+"
+            onclick="document.getElementById('mp3File').click();"
+          />
+          <input
+            type="file"
+            style="display: none;"
+            id="mp3File"
+            name="file"
+            accept="audio/*"
+          />
+          <button type="button">Instructions</button>
+        </div>
       </ul>
       <audio id="audio" controls></audio>
-    <div id="render"></div>
-    <script src="./dist/main.js"></script>
-    </nav>
-  </header>
+      
+      <div id="render"></div>
+        <div class="modal-background"></div>
+        <div class="modal">
+          <h1 class="header-text">Visual Journey</h1>
+          <div class="modal-input">
+            <div class="intro">
+              Welcome to Visual Journey to use please click the top right button
+              on the screen or select demo to choose a preloaded song to test
+              out.
+            </div>
+            <small
+              >WARNING: These visuals may potentially trigger seizures for people
+              with photosensitive epilepsy. Viewer discretion is
+              advised.</small
+            >
+          </div>
+          <div class="modal-close">
+            <button type="button" class="btn-close">Close</button>
+          </div>
+        </div>
+
+
+
+        <script src="./dist/main.js"></script>
+      </nav>
+    </header>
   </body>
 </html>
