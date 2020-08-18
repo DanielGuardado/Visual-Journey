@@ -1,44 +1,74 @@
-// MIXINS && VARIABLES
-
-@mixin basic-box-shadow($color) {
-  box-shadow: 3px 3px 5px 5px $color, 1px 0px 1px $color;
-}
-
-$main-color: blue;
-$accent-color: darken($main-color, 20%);
-$background-color: lighten($main-color, 40%);
-
-// LAYOUT
+@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
 
 body {
-  background-color: $background-color;
-  color: $main-color;
-  display: flex;
-  flex-direction: column;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
 }
 
-.center {
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.navbar{
+  height: 60px;
+  background: transparent;
+  width: 100%;
+}
+
+.logo{
+  font-weight: 800;
+  font-size: 20px;
+  border-bottom: solid 1px black;
+}
+
+li {
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none;
+  list-style: none;
+  font-family: 'Alata', sans-serif;
+}
+ul {
   display: flex;
+  justify-content: space-between;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
 }
 
-// COMPONENTS
-.card {
-  background: white;
-  height: 50vh;
-  width: 50vw;
-  border-radius: 15px;
-  margin-top: 15px;
-  @include basic-box-shadow($accent-color);
+.nav_links li {
+  display: inline-block;
+}
+#audio {
+  size: 8px;
+  position: absolute;
+    bottom: 20px;
 }
 
-.image-card {
-  background-image: url("../images/yoda-stitch.jpg");
-  background-position: center;
-}
-
-// TYPOGRAPHY
-h2 {
-  font-size: 3rem;
+#music {
+  background-color: transparent;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-weight: bold;
+    padding: 0;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #528ecc;
+    font-size: 23px;
+    margin: 0;
 }

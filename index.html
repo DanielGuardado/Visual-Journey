@@ -9,8 +9,21 @@
   </head>
 
   <body>
-    <button id="canvas-demo">Canvas Demo</button>
-    <button id="DOM-demo">DOM Demo</button>
+    <header>
+    <nav class="navbar">
+      <ul class="nav_links">
+        <li class="logo">Visual Journey</li>
+        <li>Github</li>
+        <li>LinkedIn</li>
+        <li>Angelist</li>
+        <li>Portfolio</li>
+        <input type="button" id="music" value="+" onclick="document.getElementById('mp3File').click();" />
+        <input type="file" style="display:none;" id="mp3File" name="file" accept="audio/*"/>
+      </ul>
+      <audio id="audio" controls></audio>
+    <div id="render"></div>
     <script src="./dist/main.js"></script>
+    </nav>
+  </header>
   </body>
 </html>
