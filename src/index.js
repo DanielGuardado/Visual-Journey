@@ -2,6 +2,7 @@ import "./styles/index.scss";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import SimplexNoise from "simplex-noise";
+import { data } from "autoprefixer";
 
 const modal = document.querySelector(".modal");
 const modalBackground = document.querySelector(".modal-background");
@@ -74,7 +75,7 @@ const visualizerInit = function () {
     const light = new THREE.AmbientLight(0xffffff);
     scene.add(light);
     //creating mesh
-    const planeGeometry = new THREE.PlaneGeometry(400, 400, 10, 10);
+    const planeGeometry = new THREE.PlaneGeometry(400, 400, 5, 5);
     const planeAqua = new THREE.MeshLambertMaterial({
       color: 0x00ffff,
       side: THREE.DoubleSide,
@@ -148,37 +149,49 @@ const visualizerInit = function () {
 
     function render() {
       analyser.getByteFrequencyData(dataArray);
-
-      const lowerHalfArray = dataArray.slice(0, dataArray.length / 2 - 1);
-      const upperHalfArray = dataArray.slice(
-        dataArray.length / 2 - 1,
-        dataArray.length - 1
+      //spliting the data array into 2 pieces upper half and lower half
+      const lowerHalf = dataArray.slice(0, dataArray.length / 2);
+      const upperHalf = dataArray.slice(
+        dataArray.length / 2 + 1,
+        dataArray.length
       );
-      const lowerMax = max(lowerHalfArray);
-      const lowerAvg = avg(lowerHalfArray);
-      const upperMax = max(upperHalfArray);
-      const upperAvg = avg(upperHalfArray);
+      //creating subsections of 1/4 for sound frequencies
+      const lowerHalfFreq = lowerHalf.slice(0, lowerHalf.length / 2);
+      const lowerUpperHalfFreq = lowerHalf.slice(
+        lowerHalf.length / 2,
+        lowerHalf.length
+      );
+      const upperLowerFreqHalf = upperHalf.slice(0, upperHalf.length / 2);
+      const upperUpperFreqHalf = upperHalf.slice(
+        upperHalf.length / 2 + 1,
+        upperHalf.length
+      );
 
-      const upperAvgFr = upperAvg / upperHalfArray.length;
-      const lowerMaxFr = lowerMax / lowerHalfArray.length;
-      const lowerAvgFr = lowerAvg / lowerHalfArray.length;
-      const upperMaxFr = upperMax / upperHalfArray.length;
+      const lowerAvg = avg(lowerHalfFreq);
+      const lowerUpperAvg = avg(lowerUpperHalfFreq);
+      const upperLowerAvg = avg(upperLowerFreqHalf);
+      const upperUpperAvg = avg(upperUpperFreqHalf);
 
-      planeSound(plane, modulate(upperAvgFr, 0, 1, 1, 8));
-      planeSound(plane2, modulate(lowerMaxFr, 0, 1, 1, 4));
-      planeSound(plane3, modulate(lowerAvgFr, 0, 1, 1, 8));
-      planeSound(plane4, modulate(upperMaxFr, 0, 1, 1, 6));
-      planeSound(plane5, modulate(lowerAvgFr, 0, 1, 1, 8));
-      planeSound(plane6, modulate(upperAvgFr, 0, 1, 1, 6));
-      planeSound(plane7, modulate(upperAvgFr, 0, 1, 1, 6));
-      planeSound(plane8, modulate(upperAvgFr, 0, 1, 1, 6));
-      planeSound(plane9, modulate(upperAvgFr, 0, 1, 1, 6));
-      planeSound(plane10, modulate(upperAvgFr, 0, 1, 1, 6));
+      const lowerLowerFr = lowerAvg / lowerHalfFreq.length;
+      const lowerUpperFr = lowerUpperAvg / lowerUpperHalfFreq.length;
+      const upperLowerFr = upperLowerAvg / upperLowerFreqHalf.length;
+      const upperUpperFr = upperUpperAvg / upperUpperFreqHalf.length;
+
+      planeSound(plane, modulate(lowerLowerFr, 0, 1, 1, 8));
+      planeSound(plane2, modulate(lowerUpperFr, 0, 1, 1, 4));
+      planeSound(plane3, modulate(upperLowerFr, 0, 1, 1, 8));
+      planeSound(plane4, modulate(upperUpperFr, 0, 1, 1, 6));
+      planeSound(plane5, modulate(upperLowerFr, 0, 1, 1, 8));
+      planeSound(plane6, modulate(lowerUpperFr, 0, 1, 1, 6));
+      planeSound(plane7, modulate(upperUpperFr, 0, 1, 1, 6));
+      planeSound(plane8, modulate(upperLowerFr, 0, 1, 1, 6));
+      planeSound(plane9, modulate(lowerUpperFr, 0, 1, 1, 6));
+      planeSound(plane10, modulate(lowerLowerFr, 0, 1, 1, 6));
 
       // group.rotation.y += 0;
-      group.rotation.y += lowerAvgFr / 300;
-      group.rotation.x += upperAvg / 2500;
-      group.rotation.z += lowerMaxFr / 2500;
+      group.rotation.y += lowerLowerFr / 500;
+      group.rotation.x += upperUpperFr / 3500;
+      group.rotation.z += lowerUpperFr / 3500;
       renderer.render(scene, camera);
       requestAnimationFrame(render);
     }
@@ -186,7 +199,7 @@ const visualizerInit = function () {
 
     function planeSound(mesh, distortion) {
       mesh.geometry.vertices.forEach(function (vertex) {
-        const amp = 9;
+        const amp = 6;
         const distance =
           (noise.noise2D(vertex.x, vertex.y) + 0) * distortion * amp;
         vertex.z = distance;
