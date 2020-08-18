@@ -1,6 +1,5 @@
 import "./styles/index.scss";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import SimplexNoise from "simplex-noise";
 
 const modal = document.querySelector(".modal");
@@ -28,10 +27,6 @@ const visualizerInit = function () {
   const file = document.getElementById("mp3File");
   const audio = document.getElementById("audio");
   const demo = document.getElementById("audio1");
-  // document.onload = function () {
-  //   audio.play();
-  //   play();
-  // };
 
   demo.onplay = function () {
     const demo = this;

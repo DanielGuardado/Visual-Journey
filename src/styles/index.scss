@@ -42,6 +42,7 @@ li {
 }
 li:hover {
   color: white;
+  cursor: pointer;
 }
 ul {
   display: flex;
@@ -56,6 +57,13 @@ ul {
   size: 8px;
   position: absolute;
   bottom: 20px;
+}
+
+#demo {
+  font-weight: bold;
+}
+#demo:hover {
+  cursor: pointer;
 }
 
 #music {
