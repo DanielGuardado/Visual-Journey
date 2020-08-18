@@ -2,7 +2,6 @@ import "./styles/index.scss";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import SimplexNoise from "simplex-noise";
-import { data } from "autoprefixer";
 
 const modal = document.querySelector(".modal");
 const modalBackground = document.querySelector(".modal-background");
@@ -28,9 +27,15 @@ const PI = Math.PI;
 const visualizerInit = function () {
   const file = document.getElementById("mp3File");
   const audio = document.getElementById("audio");
+  const demo = document.getElementById("audio1");
+  // document.onload = function () {
+  //   audio.play();
+  //   play();
+  // };
 
-  document.onload = function () {
-    audio.play();
+  demo.onplay = function () {
+    const demo = this;
+    audio.src = demo.src;
     play();
   };
 
@@ -88,6 +93,12 @@ const visualizerInit = function () {
       wireframe: true,
       //wireframe makes seethru wires
     });
+    const planeViolet = new THREE.MeshLambertMaterial({
+      color: 0xd900d9,
+      side: THREE.DoubleSide,
+      wireframe: true,
+      //wireframe makes seethru wires
+    });
     //creating geometry
     const plane = new THREE.Mesh(planeGeometry, planeYellow);
     plane.rotation.x = -0.5 * PI;
@@ -99,7 +110,7 @@ const visualizerInit = function () {
     plane2.position.set(0, 0, 0);
     group.add(plane2);
 
-    const plane3 = new THREE.Mesh(planeGeometry, planeAqua);
+    const plane3 = new THREE.Mesh(planeGeometry, planeViolet);
     plane3.rotation.x = -0.5 * PI;
     plane3.position.set(0, 30, 0);
     group.add(plane3);
@@ -114,7 +125,7 @@ const visualizerInit = function () {
     plane10.position.set(0, -60, 0);
     group.add(plane10);
 
-    const plane5 = new THREE.Mesh(planeGeometry, planeAqua);
+    const plane5 = new THREE.Mesh(planeGeometry, planeViolet);
     plane5.rotation.x = -0.5 * PI;
     plane5.position.set(0, -30, 0);
     group.add(plane5);
@@ -129,7 +140,7 @@ const visualizerInit = function () {
     plane7.position.set(0, 0, 30);
     group.add(plane7);
 
-    const plane8 = new THREE.Mesh(planeGeometry, planeAqua);
+    const plane8 = new THREE.Mesh(planeGeometry, planeViolet);
     plane8.rotation.x = 5 * PI;
     plane8.position.set(0, 0, 60);
     group.add(plane8);
@@ -191,7 +202,8 @@ const visualizerInit = function () {
       // group.rotation.y += 0;
       group.rotation.y += lowerLowerFr / 500;
       group.rotation.x += upperUpperFr / 3500;
-      group.rotation.z += lowerUpperFr / 3500;
+      group.rotation.x -= lowerLowerFr / 500;
+      // group.rotation.z += upperUpperFr / 3500;
       renderer.render(scene, camera);
       requestAnimationFrame(render);
     }

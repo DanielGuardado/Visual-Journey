@@ -21,14 +21,7 @@
             type="button"
             id="music"
             value="Demo"
-            onclick="document.getElementById('mp3File').click();"
-          />
-          <input
-            type="file"
-            style="display: none;"
-            id="mp3File"
-            name="file"
-            accept="audio/*"
+            onclick="document.getElementById('audio1').play();"
           />
           <input
           type="button"
@@ -47,7 +40,7 @@
         </div>
       </ul>
       <audio id="audio" controls></audio>
-      
+      <audio id="audio1" src="./src/music/demo.mp3" muted style="display: none;"></audio>
       <div id="render"></div>
         <div class="modal-background"></div>
         <div class="modal">
