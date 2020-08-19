@@ -80,6 +80,17 @@ const visualizerInit = function () {
     scene.add(group);
     document.getElementById("render").appendChild(renderer.domElement);
 
+    function planeSound(mesh, distortion) {
+      mesh.geometry.vertices.forEach(function (vertex) {
+        const amp = 6;
+        const distance =
+          (noise.noise2D(vertex.x, vertex.y) + 0) * distortion * amp;
+        vertex.z = distance;
+      });
+      mesh.geometry.verticesNeedUpdate = true;
+      mesh.geometry.computeVertexNormals();
+    }
+
     function render() {
       analyser.getByteFrequencyData(dataArray);
       //spliting the data array into 2 pieces upper half and lower half
@@ -130,18 +141,6 @@ const visualizerInit = function () {
       requestAnimationFrame(render);
     }
     render();
-
-    function planeSound(mesh, distortion) {
-      mesh.geometry.vertices.forEach(function (vertex) {
-        const amp = 6;
-        const distance =
-          (noise.noise2D(vertex.x, vertex.y) + 0) * distortion * amp;
-        vertex.z = distance;
-      });
-      mesh.geometry.verticesNeedUpdate = true;
-      mesh.geometry.computeVertexNormals();
-    }
-
     audio.play();
   }
 };
