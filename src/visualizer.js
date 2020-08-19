@@ -58,21 +58,30 @@ const visualizerInit = function () {
     }
 
     let loader = new GLTFLoader();
-    loader.load("src/scene.gltf", function (gltf) {
+    loader.load("src/models/duck/scene.gltf", function (gltf) {
       let duck = gltf.scene.children[0];
       duck.scale.set(30, 30, 30, 30);
       duck.position.set(0, 120, 60);
+      group.add(gltf.scene);
+    });
+    let loader2 = new GLTFLoader();
+    loader2.load("src/models/spongebob/scene.gltf", function (gltf) {
+      let spongebob = gltf.scene.children[0];
+      spongebob.scale.set(30, 30, 30, 30);
+      spongebob.rotation.x = -0.5 * Math.PI;
+      spongebob.rotation.y = -0.5 * Math.PI;
+      spongebob.position.set(0, -440, -120);
       group.add(gltf.scene);
     });
     const group = new Group();
     scene.add(camera);
     scene.add(directionalLight);
     scene.add(light);
-    group.add(plane);
-    group.add(plane2);
-    group.add(plane3);
-    group.add(plane4);
-    group.add(plane5);
+    // group.add(plane);
+    // group.add(plane2);
+    // group.add(plane3);
+    // group.add(plane4);
+    // group.add(plane5);
     group.add(plane6);
     group.add(plane7);
     group.add(plane8);
@@ -92,6 +101,10 @@ const visualizerInit = function () {
       mesh.geometry.verticesNeedUpdate = true;
       mesh.geometry.computeVertexNormals();
     };
+
+    let posx = -150;
+    let posy = 150;
+    let posz = 150;
 
     function render() {
       analyser.getByteFrequencyData(dataArray);
@@ -123,22 +136,41 @@ const visualizerInit = function () {
       const lowerUpperFr = lowerUpperAvg / lowerUpperHalfFreq.length;
       const upperLowerFr = upperLowerAvg / upperLowerFreqHalf.length;
       const upperUpperFr = upperUpperAvg / upperUpperFreqHalf.length;
+      if (lowerLowerFr > 3.5) {
+        group.add(plane);
+        group.add(plane2);
+        group.add(plane3);
+        group.add(plane4);
+        group.add(plane5);
+      } else {
+        group.remove(plane);
+        group.remove(plane2);
+        group.remove(plane3);
+        group.remove(plane4);
+        group.remove(plane5);
+      }
 
       planeSound(plane, modulate(lowerLowerFr, 0, 1, 1, 8));
       planeSound(plane2, modulate(lowerUpperFr, 0, 1, 1, 4));
       planeSound(plane3, modulate(upperLowerFr, 0, 1, 1, 8));
       planeSound(plane4, modulate(upperUpperFr, 0, 1, 1, 6));
       planeSound(plane5, modulate(upperLowerFr, 0, 1, 1, 8));
-      planeSound(plane6, modulate(lowerUpperFr, 0, 1, 1, 6));
-      planeSound(plane7, modulate(upperUpperFr, 0, 1, 1, 6));
-      planeSound(plane8, modulate(upperLowerFr, 0, 1, 1, 6));
-      planeSound(plane9, modulate(lowerUpperFr, 0, 1, 1, 6));
-      planeSound(plane10, modulate(lowerLowerFr, 0, 1, 1, 6));
+      // planeSound(plane6, modulate(lowerUpperFr, 0, 1, 1, 6));
+      // planeSound(plane7, modulate(upperUpperFr, 0, 1, 1, 6));
+      // planeSound(plane8, modulate(upperLowerFr, 0, 1, 1, 6));
+      // planeSound(plane9, modulate(lowerUpperFr, 0, 1, 1, 6));
+      // planeSound(plane10, modulate(lowerLowerFr, 0, 1, 1, 6));
 
       // group.rotation.y += 0;
+
+      // posx += lowerLowerFr / 400;
+      // posy += upperUpperFr / 400;
+      // posz += lowerUpperFr / 400;
       group.rotation.y += lowerLowerFr / 500;
       group.rotation.x += upperUpperFr / 3500;
       group.rotation.x -= lowerLowerFr / 500;
+      // console.log(posx);
+      // camera.position.set(posz, posx, posy);
       // group.rotation.z += upperUpperFr / 3500;
       renderer.render(scene, camera);
       requestAnimationFrame(render);
