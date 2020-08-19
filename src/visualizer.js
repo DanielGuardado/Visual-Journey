@@ -1,6 +1,7 @@
-import * as THREE from "three";
+import { Scene, Group, WebGLRenderer } from "three";
 import SimplexNoise from "simplex-noise";
-const { avg, modulate } = require("./util");
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { avg, modulate } from "./util";
 import {
   plane,
   plane2,
@@ -13,6 +14,7 @@ import {
   plane9,
   plane10,
 } from "./geometry";
+import { camera, directionalLight, light } from "./lighting_renderer";
 
 const noise = new SimplexNoise();
 const visualizerInit = function () {
@@ -44,26 +46,26 @@ const visualizerInit = function () {
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
-    const scene = new THREE.Scene();
-    const group = new THREE.Group();
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      0.01,
-      1000
-    );
-    //camera pos R:L / up:down / far away
-    camera.position.set(0, 300, 0);
-    //where cam is looking
-    camera.lookAt(scene.position);
-    scene.add(camera);
-    //creating renderer
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const scene = new Scene();
+    const renderer = new WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    //adding lighting
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.x = 1;
-    const light = new THREE.AmbientLight(0xffffff);
+
+    window.addEventListener("resize", onWindowResize, false);
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    let loader = new GLTFLoader();
+    loader.load("src/scene.gltf", function (gltf) {
+      let duck = gltf.scene.children[0];
+      duck.scale.set(30, 30, 30, 30);
+      duck.position.set(0, 120, 60);
+      group.add(gltf.scene);
+    });
+    const group = new Group();
+    scene.add(camera);
     scene.add(directionalLight);
     scene.add(light);
     group.add(plane);
@@ -80,7 +82,7 @@ const visualizerInit = function () {
     scene.add(group);
     document.getElementById("render").appendChild(renderer.domElement);
 
-    function planeSound(mesh, distortion) {
+    const planeSound = function planeSound(mesh, distortion) {
       mesh.geometry.vertices.forEach(function (vertex) {
         const amp = 6;
         const distance =
@@ -89,10 +91,11 @@ const visualizerInit = function () {
       });
       mesh.geometry.verticesNeedUpdate = true;
       mesh.geometry.computeVertexNormals();
-    }
+    };
 
     function render() {
       analyser.getByteFrequencyData(dataArray);
+      // console.log(dataArray);
       //spliting the data array into 2 pieces upper half and lower half
       const lowerHalf = dataArray.slice(0, dataArray.length / 2);
       const upperHalf = dataArray.slice(

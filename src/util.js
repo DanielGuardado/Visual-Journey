@@ -14,21 +14,10 @@ function avg(arr) {
   });
   return total / arr.length;
 }
-
-function max(arr) {
-  return arr.reduce(function (a, b) {
-    return Math.max(a, b);
-  });
-}
 const cos = Math.cos;
 const sin = Math.sin;
 const sqrt = Math.sqrt;
 const abs = Math.abs;
 const PI = Math.PI;
 
-module.exports = {
-  modulate,
-  avg,
-  max,
-  PI,
-};
+export { modulate, avg, PI };
