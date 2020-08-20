@@ -1,5 +1,4 @@
 const colorArr = [
-  0xffff00,
   0x00ffff,
   0xd900d9,
   0x80ff00,

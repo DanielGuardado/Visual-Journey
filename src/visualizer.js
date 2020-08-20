@@ -57,6 +57,7 @@ const visualizerInit = function () {
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
     const group = new Group();
+
     group.add(charizard);
     group.add(meeseeks);
     group.add(toad);
@@ -65,11 +66,6 @@ const visualizerInit = function () {
     scene.add(camera);
     scene.add(directionalLight);
     scene.add(light);
-    // group.add(plane);
-    // group.add(plane2);
-    // group.add(plane3);
-    // group.add(plane4);
-    // group.add(plane5);
     group.add(plane6);
     group.add(plane7);
     group.add(plane8);
@@ -124,16 +120,20 @@ const visualizerInit = function () {
       const lowerUpperFr = lowerUpperAvg / lowerUpperHalfFreq.length;
       const upperLowerFr = upperLowerAvg / upperLowerFreqHalf.length;
       const upperUpperFr = upperUpperAvg / upperUpperFreqHalf.length;
-      if (lowerLowerFr > 3.5) {
+      if (lowerLowerFr > 3.1) {
         group.add(plane);
         group.add(plane2);
         group.add(plane3);
-        group.add(plane4);
-        group.add(plane5);
       } else {
         group.remove(plane);
         group.remove(plane2);
         group.remove(plane3);
+      }
+
+      if (upperLowerFr > 1.8) {
+        group.add(plane4);
+        group.add(plane5);
+      } else {
         group.remove(plane4);
         group.remove(plane5);
       }
@@ -142,11 +142,17 @@ const visualizerInit = function () {
       charizard.rotation.y += upperLowerFr / 300;
       meeseeks.rotation.x += upperUpperFr;
       meeseeks.rotation.y += upperUpperFr;
+      toad.rotation.x += upperLowerFr / 200;
+      toad.rotation.y += upperLowerFr / 200;
+      spongebob.rotation.x += lowerUpperFr / 200;
+      spongebob.rotation.y += lowerUpperFr / 200;
+      duck.rotation.x += upperLowerFr / 200;
+      duck.rotation.y += upperLowerFr / 200;
 
       planeSound(plane, modulate(lowerLowerFr, 0, 1, 1, 8));
-      planeSound(plane2, modulate(lowerUpperFr, 0, 1, 1, 4));
-      planeSound(plane3, modulate(upperLowerFr, 0, 1, 1, 8));
-      planeSound(plane4, modulate(upperUpperFr, 0, 1, 1, 6));
+      planeSound(plane2, modulate(lowerLowerFr, 0, 1, 1, 4));
+      planeSound(plane3, modulate(lowerLowerFr, 0, 1, 1, 8));
+      planeSound(plane4, modulate(upperLowerFr, 0, 1, 1, 6));
       planeSound(plane5, modulate(upperLowerFr, 0, 1, 1, 8));
       planeSound(plane6, modulate(lowerUpperFr, 0, 1, 1, 6));
       planeSound(plane7, modulate(upperUpperFr, 0, 1, 1, 6));
