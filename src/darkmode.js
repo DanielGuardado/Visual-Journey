@@ -3,7 +3,20 @@ const instructions = document.getElementById("instructions");
 const li = document.querySelectorAll("li");
 const background = document.getElementById("bg");
 const dark = document.getElementById("dark-mode");
+const demo = document.getElementById("demo");
 const color = document.getElementById("color-mode");
+const darkdemo = demo.addEventListener("click", () => {
+  background.style.background = "black";
+  dark.style.display = "none";
+  color.style.display = "block";
+  li.forEach((el) => {
+    el.style.color = "white";
+  });
+  music.style.color = "white";
+  instructions.style.color = "white";
+  instructions.style.border = "3px solid white";
+});
+
 const darkMode = dark.addEventListener("click", () => {
   background.style.background = "black";
   dark.style.display = "none";
