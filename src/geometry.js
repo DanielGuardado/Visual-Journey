@@ -49,3 +49,16 @@ export const plane7 = createPlane(planeGeometry, randomColor, 5, 0, 30);
 export const plane8 = createPlane(planeGeometry, randomColor2, 5, 0, 60);
 export const plane9 = createPlane(planeGeometry, randomColor3, 5, 0, -60);
 export const plane10 = createPlane(planeGeometry, randomColor, -0.5, -60, 0);
+
+export const farPlane = createPlane(planeGeometry, randomColor, -0.5, 0, -600);
+export const farPlane2 = createPlane(planeGeometry, randomColor2, -0.5, 0, 600);
+export const farPlane3 = createPlane(planeGeometry, randomColor, -0.5, 600, 0);
+export const farPlane4 = createPlane(
+  planeGeometry,
+  randomColor2,
+  -0.5,
+  -600,
+  0
+);
+// export const farPlane5 = createPlane(planeGeometry, randomColor, -0.5, 0 - 600);
+// export const farPlane6 = createPlane(planeGeometry, randomColor, -0.5, 0 - 600);

@@ -12,6 +12,10 @@ import {
   plane8,
   plane9,
   plane10,
+  farPlane,
+  farPlane2,
+  farPlane3,
+  farPlane4,
 } from "./geometry";
 import { camera, directionalLight, light } from "./lighting_renderer";
 import { charizard, meeseeks, toad, spongebob, duck } from "./models";
@@ -65,8 +69,12 @@ const visualizerInit = function () {
     scene.add(camera);
     scene.add(directionalLight);
     scene.add(light);
-    group.add(plane4);
-    group.add(plane5);
+    // group.add(plane4);
+    // group.add(plane5);
+    group.add(farPlane2);
+    group.add(farPlane);
+    group.add(farPlane3);
+    group.add(farPlane4);
 
     scene.add(group);
     document.getElementById("render").appendChild(renderer.domElement);
@@ -177,7 +185,6 @@ const visualizerInit = function () {
         group.remove(plane10);
       }
 
-      console.log(upperLowerMaxFr);
       if (
         upperLowerMaxFr < 0.25 ||
         (upperLowerMaxFr > 1 && upperLowerMaxFr < 1.5) ||
