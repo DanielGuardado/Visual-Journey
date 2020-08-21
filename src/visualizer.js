@@ -1,6 +1,6 @@
 import { Scene, Group, WebGLRenderer } from "three";
 import SimplexNoise from "simplex-noise";
-import { avg, modulate } from "./util";
+import { avg, modulate, max, min } from "./util";
 import {
   plane,
   plane2,
@@ -60,17 +60,13 @@ const visualizerInit = function () {
 
     group.add(charizard);
     group.add(meeseeks);
-    group.add(toad);
     group.add(duck);
     group.add(spongebob);
     scene.add(camera);
     scene.add(directionalLight);
     scene.add(light);
-    group.add(plane6);
-    group.add(plane7);
-    group.add(plane8);
-    group.add(plane9);
-    group.add(plane10);
+    group.add(plane4);
+    group.add(plane5);
 
     scene.add(group);
     document.getElementById("render").appendChild(renderer.domElement);
@@ -116,11 +112,35 @@ const visualizerInit = function () {
       const upperLowerAvg = avg(upperLowerFreqHalf);
       const upperUpperAvg = avg(upperUpperFreqHalf);
 
+      const lowerLowerMax = max(lowerHalfFreq);
+      const lowerUpperMax = max(lowerUpperHalfFreq);
+      const upperLowerMax = max(upperLowerFreqHalf);
+      const upperUpperMax = max(upperUpperFreqHalf);
+
+      const lowerLowerMin = min(lowerHalfFreq);
+      const lowerUpperMin = min(lowerUpperHalfFreq);
+      const upperLowerMin = min(upperLowerFreqHalf);
+      const upperUpperMin = min(upperUpperFreqHalf);
+
       const lowerLowerFr = lowerAvg / lowerHalfFreq.length;
       const lowerUpperFr = lowerUpperAvg / lowerUpperHalfFreq.length;
       const upperLowerFr = upperLowerAvg / upperLowerFreqHalf.length;
       const upperUpperFr = upperUpperAvg / upperUpperFreqHalf.length;
-      if (lowerLowerFr > 3.1) {
+
+      const lowerLowerMaxFr = lowerLowerMax / lowerHalfFreq.length;
+      const lowerUpperMaxFr = lowerUpperMax / lowerUpperHalfFreq.length;
+      const upperLowerMaxFr = upperLowerMax / upperLowerFreqHalf.length;
+      const upperUpperMaxFr = upperUpperMax / upperUpperFreqHalf.length;
+
+      const lowerLowerMinFr = lowerLowerMin / lowerHalfFreq.length;
+      const lowerUpperMinFr = lowerUpperMin / lowerUpperHalfFreq.length;
+      const upperLowerMinFr = upperLowerMin / upperLowerFreqHalf.length;
+      const upperUpperMinFr = upperUpperMin / upperUpperFreqHalf.length;
+
+      if (
+        (lowerLowerMaxFr > 7.6 && lowerLowerMaxFr < 7.0) ||
+        lowerLowerMaxFr >= 7.9375
+      ) {
         group.add(plane);
         group.add(plane2);
         group.add(plane3);
@@ -130,10 +150,46 @@ const visualizerInit = function () {
         group.remove(plane3);
       }
 
-      if (upperLowerFr > 1.8) {
+      if (
+        (lowerLowerMinFr > 5.2 && lowerLowerMinFr < 5.4) ||
+        (lowerLowerMinFr > 5.7 && lowerLowerMinFr < 5.9) ||
+        lowerLowerMinFr > 6.1
+      ) {
+        group.add(plane6);
+        group.add(plane7);
+        group.add(toad);
+      } else {
+        group.remove(plane6);
+        group.remove(plane7);
+        group.remove(toad);
+      }
+
+      if (
+        (lowerUpperMinFr > 2.4 && lowerUpperMinFr < 3.4) ||
+        (lowerUpperMinFr > 3.9 && lowerUpperMinFr < 4.3)
+      ) {
+        group.add(plane8);
+        group.add(plane9);
+        group.add(plane10);
+      } else {
+        group.remove(plane8);
+        group.remove(plane9);
+        group.remove(plane10);
+      }
+
+      console.log(upperLowerMaxFr);
+      if (
+        upperLowerMaxFr < 0.25 ||
+        (upperLowerMaxFr > 1 && upperLowerMaxFr < 1.5) ||
+        (upperLowerMaxFr > 2.5 && upperLowerMaxFr < 3)
+      ) {
         group.add(plane4);
         group.add(plane5);
       } else {
+        group.remove(plane4);
+        group.remove(plane5);
+      }
+      if (upperLowerMaxFr === 0) {
         group.remove(plane4);
         group.remove(plane5);
       }
@@ -149,25 +205,39 @@ const visualizerInit = function () {
       duck.rotation.x += upperLowerFr / 200;
       duck.rotation.y += upperLowerFr / 200;
 
-      planeSound(plane, modulate(lowerLowerFr, 0, 1, 1, 8));
+      planeSound(plane, modulate(lowerLowerFr, 0, 1, 1, 6));
+      // planeSound(plane, modulate(lowerLowerFr * 20, 0, 2, 2, 20));
       planeSound(plane2, modulate(lowerLowerFr, 0, 1, 1, 4));
       planeSound(plane3, modulate(lowerLowerFr, 0, 1, 1, 8));
       planeSound(plane4, modulate(upperLowerFr, 0, 1, 1, 6));
       planeSound(plane5, modulate(upperLowerFr, 0, 1, 1, 8));
-      planeSound(plane6, modulate(lowerUpperFr, 0, 1, 1, 6));
-      planeSound(plane7, modulate(upperUpperFr, 0, 1, 1, 6));
-      planeSound(plane8, modulate(upperLowerFr, 0, 1, 1, 6));
+      planeSound(plane6, modulate(lowerUpperMinFr, 0, 1, 1, 6));
+      planeSound(plane7, modulate(lowerUpperMinFr, 0, 1, 1, 6));
+      planeSound(plane8, modulate(lowerUpperFr, 0, 1, 1, 6));
       planeSound(plane9, modulate(lowerUpperFr, 0, 1, 1, 6));
-      planeSound(plane10, modulate(lowerLowerFr, 0, 1, 1, 6));
+      planeSound(plane10, modulate(lowerUpperFr, 0, 1, 1, 6));
 
       // group.rotation.y += 0;
 
       // posx += lowerLowerFr / 400;
       // posy += upperUpperFr / 400;
       // posz += lowerUpperFr / 400;
-      group.rotation.y += lowerLowerFr / 500;
-      group.rotation.x += upperUpperFr / 3500;
-      group.rotation.x -= lowerLowerFr / 500;
+      // console.log(lowerLowerFr);
+      if (lowerLowerFr > 5) {
+        group.rotation.y += lowerLowerFr / 500;
+      } else {
+        group.rotation.y - +lowerLowerFr / 250;
+      }
+      if (upperUpperFr > 2.5) {
+        group.rotation.z += upperLowerFr / 250;
+      } else {
+        group.rotation.z -= upperLowerFr / 500;
+      }
+      if (lowerUpperFr > 5.5) {
+        group.rotation.x += lowerUpperFr / 250;
+      } else {
+        group.rotation.x -= lowerUpperFr / 500;
+      }
       // console.log(posx);
       // camera.position.set(posz, posx, posy);
       // group.rotation.z += upperUpperFr / 3500;
