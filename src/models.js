@@ -51,4 +51,19 @@ loader.load("src/models/duck/scene.gltf", function (gltf) {
   duck.position.set(0, 120, 60);
 });
 
-export { charizard, meeseeks, toad, spongebob, duck };
+let jelly;
+let loader5 = new GLTFLoader();
+loader5.load("src/models/jellyfish/scene.gltf", function (gltf) {
+  jelly = gltf.scene.children[0];
+  jelly.scale.set(30, 30, 30, 30);
+  jelly.position.set(0, 740, -410);
+});
+let jelly2;
+let loader7 = new GLTFLoader();
+loader7.load("src/models/jellyfish/scene.gltf", function (gltf) {
+  jelly2 = gltf.scene.children[0];
+  jelly2.scale.set(30, 30, 30, 30);
+  jelly2.position.set(0, -740, -410);
+});
+
+export { charizard, meeseeks, toad, spongebob, duck, jelly, jelly2 };

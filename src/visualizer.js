@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import { Scene, Group, WebGLRenderer } from "three";
 import SimplexNoise from "simplex-noise";
 import { avg, modulate, max, min } from "./util";
@@ -17,8 +18,17 @@ import {
   farPlane3,
   farPlane4,
 } from "./geometry";
+import { sphere, sphere2, sphere3 } from "./spheres";
 import { camera, directionalLight, light } from "./lighting_renderer";
-import { charizard, meeseeks, toad, spongebob, duck } from "./models";
+import {
+  charizard,
+  meeseeks,
+  toad,
+  spongebob,
+  duck,
+  jelly,
+  jelly2,
+} from "./models";
 
 const noise = new SimplexNoise();
 const visualizerInit = function () {
@@ -61,21 +71,9 @@ const visualizerInit = function () {
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
     const group = new Group();
-
-    group.add(charizard);
-    group.add(meeseeks);
-    group.add(duck);
-    group.add(spongebob);
     scene.add(camera);
     scene.add(directionalLight);
     scene.add(light);
-    // group.add(plane4);
-    // group.add(plane5);
-    group.add(farPlane2);
-    group.add(farPlane);
-    group.add(farPlane3);
-    group.add(farPlane4);
-
     scene.add(group);
     document.getElementById("render").appendChild(renderer.domElement);
 
@@ -96,7 +94,6 @@ const visualizerInit = function () {
 
     function render() {
       analyser.getByteFrequencyData(dataArray);
-      // console.log(dataArray);
       //spliting the data array into 2 pieces upper half and lower half
       const lowerHalf = dataArray.slice(0, dataArray.length / 2);
       const upperHalf = dataArray.slice(
@@ -152,10 +149,22 @@ const visualizerInit = function () {
         group.add(plane);
         group.add(plane2);
         group.add(plane3);
+        group.add(sphere);
+        group.add(charizard);
+        group.add(meeseeks);
+        group.remove(sphere3);
       } else {
         group.remove(plane);
         group.remove(plane2);
         group.remove(plane3);
+        group.remove(sphere);
+        group.remove(charizard);
+        group.remove(meeseeks);
+        if (lowerLowerMaxFr > 6 && lowerLowerMaxFr < 7.5) {
+          group.add(sphere3);
+        } else {
+          group.remove(sphere3);
+        }
       }
 
       if (
@@ -166,10 +175,12 @@ const visualizerInit = function () {
         group.add(plane6);
         group.add(plane7);
         group.add(toad);
+        group.add(sphere2);
       } else {
         group.remove(plane6);
         group.remove(plane7);
         group.remove(toad);
+        group.remove(sphere2);
       }
 
       if (
@@ -179,10 +190,26 @@ const visualizerInit = function () {
         group.add(plane8);
         group.add(plane9);
         group.add(plane10);
+        // group.add(duck);
+        // group.add(spongebob);
       } else {
         group.remove(plane8);
         group.remove(plane9);
         group.remove(plane10);
+        // group.remove(duck);
+        // group.remove(spongebob);
+      }
+
+      if (lowerUpperMinFr > 3) {
+        group.add(duck);
+        group.add(spongebob);
+        group.add(jelly);
+        group.add(jelly2);
+      } else {
+        group.remove(duck);
+        group.remove(spongebob);
+        group.remove(jelly);
+        group.remove(jelly2);
       }
 
       if (
@@ -200,7 +227,8 @@ const visualizerInit = function () {
         group.remove(plane4);
         group.remove(plane5);
       }
-
+      sphere.rotation.x += lowerLowerFr / 300;
+      sphere.rotation.y += lowerLowerFr / 300;
       charizard.rotation.x += lowerLowerFr / 300;
       charizard.rotation.y += upperLowerFr / 300;
       meeseeks.rotation.x += upperUpperFr;
@@ -223,13 +251,11 @@ const visualizerInit = function () {
       planeSound(plane8, modulate(lowerUpperFr, 0, 1, 1, 6));
       planeSound(plane9, modulate(lowerUpperFr, 0, 1, 1, 6));
       planeSound(plane10, modulate(lowerUpperFr, 0, 1, 1, 6));
-
-      // group.rotation.y += 0;
-
-      // posx += lowerLowerFr / 400;
-      // posy += upperUpperFr / 400;
-      // posz += lowerUpperFr / 400;
-      // console.log(lowerLowerFr);
+      planeSound(farPlane, modulate(lowerUpperMinFr, 0, 1, 1, 6));
+      planeSound(farPlane2, modulate(lowerUpperMinFr, 0, 1, 1, 6));
+      planeSound(farPlane3, modulate(lowerUpperFr, 0, 1, 1, 6));
+      planeSound(farPlane4, modulate(lowerUpperFr, 0, 1, 1, 6));
+      planeSound(sphere3, modulate(lowerUpperFr, 0, 1, 1, 6));
       if (lowerLowerFr > 5) {
         group.rotation.y += lowerLowerFr / 500;
       } else {
@@ -245,9 +271,6 @@ const visualizerInit = function () {
       } else {
         group.rotation.x -= lowerUpperFr / 500;
       }
-      // console.log(posx);
-      // camera.position.set(posz, posx, posy);
-      // group.rotation.z += upperUpperFr / 3500;
       renderer.render(scene, camera);
       requestAnimationFrame(render);
     }

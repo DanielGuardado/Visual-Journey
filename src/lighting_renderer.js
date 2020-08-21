@@ -5,11 +5,12 @@ import {
   AmbientLight,
 } from "three";
 const scene = new Scene();
+//45
 const camera = new PerspectiveCamera(
-  45,
+  90,
   window.innerWidth / window.innerHeight,
   0.01,
-  1000
+  2000
 );
 //camera pos R:L / up:down / far away
 camera.position.set(0, 300, 0);
