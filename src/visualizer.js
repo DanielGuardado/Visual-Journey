@@ -183,7 +183,8 @@ const visualizerInit = function () {
       }
 
       if (
-        (lowerLowerMinFr > 5.2 && lowerLowerMinFr < 5.4) ||
+        (lowerLowerMinFr > 4.2 && lowerLowerMinFr < 4.7) ||
+        (lowerLowerMinFr > 5.1 && lowerLowerMinFr < 5.4) ||
         (lowerLowerMinFr > 5.7 && lowerLowerMinFr < 5.9) ||
         lowerLowerMinFr > 6.1
       ) {
