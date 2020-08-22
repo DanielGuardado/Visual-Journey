@@ -138,10 +138,16 @@ button.btn-close:hover {
   color: white;
   border-color: black;
 }
+#three {
+  height: 65px;
+  width: 135px;
+}
 
 .modal-close {
   padding-top: 10px;
   text-align: right;
+  display: flex;
+  justify-content: space-between;
 }
 
 button.btn-cancel {

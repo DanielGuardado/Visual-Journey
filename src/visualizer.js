@@ -88,6 +88,21 @@ const visualizerInit = function () {
       mesh.geometry.computeVertexNormals();
     };
 
+    // const sphereSound = function sphereSound(mesh, distortion, distortion2) {
+    //   mesh.geometry.vertices.forEach(function (vertex) {
+    //     const offset = mesh.geometry.parameters.radius;
+    //     const amp = 6;
+    //     vertex.normalize();
+    //     const distance =
+    //       offset +
+    //       distortion2 +
+    //       (noise.noise2D(vertex.x, vertex.y) + 0) * distortion * amp;
+    //     vertex.z = distance;
+    //   });
+    //   mesh.geometry.verticesNeedUpdate = true;
+    //   mesh.geometry.computeVertexNormals();
+    // };
+
     let posx = -150;
     let posy = 150;
     let posz = 150;
