@@ -14,6 +14,11 @@ body {
   display: none;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
