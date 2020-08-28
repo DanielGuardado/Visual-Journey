@@ -1,6 +1,7 @@
 # Visual-Journey
 
-![](https://media2.giphy.com/media/htR2Xb6Eu59vYOciYh/giphy.gif)
+![Demo](https://media2.giphy.com/media/iiUs9BWvuNpAqGr81c/giphy.gif)
+
 
 ## Background and Overview
 
